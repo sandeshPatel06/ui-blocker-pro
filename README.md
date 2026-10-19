@@ -132,6 +132,12 @@ Built with vanilla HTML/CSS/JS — **no frameworks, no build step, no dependenci
 
 ---
 
+## 🙏 Credits
+
+This project builds on the original **UI Blocker** extension created by **[Reak Infotech](https://github.com/reakinfotech/ui-Block)**. Full credit for the original concept and foundation goes to the Reak Infotech team — this repository continues their work with added cross-browser support, theming and UX improvements.
+
+---
+
 ## 📌 Keywords
 
 `UI Blocker Pro` · hide elements on website · fade images · video opacity · custom CSS selector blocker · distraction blocker · declutter browser · hide cookie banner · Chrome extension · Firefox add-on · Manifest V3 · privacy extension · per-site rules
