@@ -6,15 +6,16 @@
   <title>UI Blocker Pro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* ── Professional Blue Design Tokens ── */
+    /* ── Snapchat Yellow Design Tokens ── */
     :root {
-      --primary: #2563eb;
-      --primary-h: #1d4ed8;
-      --bg: #f8fafc;
+      --primary: #fffc00;
+      --primary-h: #e6e300;
+      --primary-ink: #201d17;
+      --bg: #faf9f7;
       --surface: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --muted: #64748b;
+      --border: #e7e3dc;
+      --text: #201d17;
+      --muted: #6d675c;
       --active: #10b981;
       --inactive: #ef4444;
       --radius: 12px;
@@ -22,40 +23,44 @@
 
     @media (prefers-color-scheme: dark) {
       :root:not(.light-theme) {
-        --primary: #3b82f6;
-        --primary-h: #60a5fa;
-        --bg: #0f172a;
-        --surface: #1e293b;
-        --border: #334155;
-        --text: #f8fafc;
-        --muted: #94a3b8;
+        --primary: #fffc00;
+        --primary-h: #f0ed00;
+        --primary-ink: #fffc00;
+        --bg: #15130f;
+        --surface: #201c16;
+        --border: #37312a;
+        --text: #f5f2ea;
+        --muted: #a39c8d;
       }
     }
 
     .dark-theme {
-      --primary: #3b82f6;
-      --primary-h: #60a5fa;
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --border: #334155;
-      --text: #f8fafc;
-      --muted: #94a3b8;
+      --primary: #fffc00;
+      --primary-h: #f0ed00;
+      --primary-ink: #fffc00;
+      --bg: #15130f;
+      --surface: #201c16;
+      --border: #37312a;
+      --text: #f5f2ea;
+      --muted: #a39c8d;
     }
 
     .light-theme {
-      --primary: #2563eb;
-      --primary-h: #1d4ed8;
-      --bg: #f8fafc;
+      --primary: #fffc00;
+      --primary-h: #e6e300;
+      --primary-ink: #201d17;
+      --bg: #faf9f7;
       --surface: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --muted: #64748b;
+      --border: #e7e3dc;
+      --text: #201d17;
+      --muted: #6d675c;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     body {
@@ -71,7 +76,7 @@
     .stack {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
     /* ── Header ── */
@@ -92,6 +97,7 @@
       height: 30px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .header-brand h1 {
@@ -121,7 +127,7 @@
       background: var(--border);
       border-radius: 999px;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .slider-toggle::before {
@@ -133,7 +139,7 @@
       top: 3px;
       background: #fff;
       border-radius: 50%;
-      transition: transform 0.2s;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
@@ -145,12 +151,17 @@
       transform: translateX(18px);
     }
 
+    .switch input:focus-visible+.slider-toggle {
+      outline: 2px solid var(--primary-ink);
+      outline-offset: 2px;
+    }
+
     /* ── Status pill ── */
     .status {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 14px;
+      padding: 8px 12px;
       border-radius: var(--radius);
       border: 1px solid var(--border);
       background: var(--surface);
@@ -158,6 +169,7 @@
       font-weight: 500;
       color: var(--muted);
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .status-dot {
@@ -176,6 +188,17 @@
     .status.active .status-dot {
       background: var(--active);
       box-shadow: 0 0 8px var(--active);
+      animation: pulse 2s ease-in-out infinite;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 4px var(--active);
+      }
+      50% {
+        box-shadow: 0 0 12px var(--active), 0 0 20px color-mix(in srgb, var(--active) 40%, transparent);
+      }
     }
 
     .status.inactive {
@@ -198,18 +221,29 @@
       flex-direction: column;
       gap: 16px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+    }
+
+    .card.disabled .control,
+    .card.disabled .row {
+      opacity: 0.5;
+      pointer-events: none;
     }
 
     .row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--border);
       padding-bottom: 12px;
+      margin-bottom: -4px;
     }
 
     .row span {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 500;
     }
 
@@ -229,8 +263,8 @@
     .control-head label {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 11px;
+      gap: 8px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
@@ -246,19 +280,19 @@
     .val {
       font-size: 12px;
       font-weight: 700;
-      color: var(--primary);
+      color: var(--primary-ink);
       font-variant-numeric: tabular-nums;
     }
 
     .stepper {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .step-btn {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -267,13 +301,23 @@
       border-radius: 8px;
       color: var(--text);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .step-btn:hover {
       background: var(--surface);
-      border-color: var(--primary);
-      color: var(--primary);
+      border-color: var(--primary-ink);
+      color: var(--primary-ink);
+    }
+
+    .step-btn:active {
+      transform: scale(0.92);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .step-btn:focus-visible {
+      outline: 2px solid var(--primary-ink);
+      outline-offset: 2px;
     }
 
     .step-btn svg {
@@ -287,8 +331,15 @@
       height: 6px;
       border-radius: 6px;
       appearance: none;
-      background: var(--border);
+      background: linear-gradient(to right, var(--primary) 0%, var(--primary) var(--fill, 0%), var(--border) var(--fill, 0%));
       outline: none;
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    input[type="range"]:focus-visible {
+      outline: 2px solid var(--primary-ink);
+      outline-offset: 2px;
     }
 
     input[type="range"]::-webkit-slider-thumb {
@@ -300,11 +351,40 @@
       border: 2px solid var(--surface);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      transition: transform 0.1s;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     input[type="range"]::-webkit-slider-thumb:hover {
       transform: scale(1.1);
+    }
+
+    input[type="range"]:active::-webkit-slider-thumb {
+      transform: scale(1.25);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid var(--surface);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    input[type="range"]::-moz-range-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    input[type="range"]:active::-moz-range-thumb {
+      transform: scale(1.25);
+    }
+
+    input[type="range"]::-moz-range-track {
+      height: 6px;
+      border-radius: 6px;
+      background: transparent;
     }
 
     /* ── Button ── */
@@ -314,23 +394,31 @@
       border: none;
       border-radius: var(--radius);
       background: var(--primary);
-      color: #fff;
+      color: #1f1c17;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px -1px rgba(198, 194, 0, 0.2);
     }
 
     .btn:hover {
       background: var(--primary-h);
       transform: translateY(-1px);
-      box-shadow: 0 6px 10px -1px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 6px 10px -1px rgba(198, 194, 0, 0.3);
     }
 
     .btn:active {
       transform: translateY(0);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--primary-ink);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
   </style>
 </head>
 
@@ -341,7 +429,7 @@
         <img src="icons/48.png" alt="Logo">
         <h1>UI Blocker Pro</h1>
       </div>
-      <label class="switch">
+      <label class="switch" aria-label="Enable/Disable blocker">
         <input type="checkbox" id="powerToggle" checked>
         <span class="slider-toggle"></span>
       </label>
@@ -355,7 +443,7 @@
     <div class="card">
       <div class="row">
         <span>Apply Everywhere</span>
-        <label class="switch">
+        <label class="switch" aria-label="Apply everywhere">
           <input type="checkbox" id="globalMode">
           <span class="slider-toggle"></span>
         </label>

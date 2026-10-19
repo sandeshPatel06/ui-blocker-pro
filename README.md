@@ -1,10 +1,10 @@
-# **UI Blocker Chrome Extension**
+# **UI Blocker Pro — Chrome & Firefox Extension**
 
 **Customize your browsing experience with element opacity control**
 
 ## 🌟 Overview
 
-**UI Blocker** is a powerful and user-friendly Chrome extension that allows you to reduce distractions and take control of your browsing environment. Whether you're watching videos, reviewing image-heavy content, or working with cluttered interfaces, UI Blocker lets you customize the opacity of images, videos, and specific elements on any website.
+**UI Blocker** is a powerful and user-friendly cross-browser extension for Chrome and Firefox that allows you to reduce distractions and take control of your browsing environment. Whether you're watching videos, reviewing image-heavy content, or working with cluttered interfaces, UI Blocker lets you customize the opacity of images, videos, and specific elements on any website.
 
 ---
 
@@ -21,7 +21,8 @@
 
 ### 1. **Install the Extension**
 
-* Add "UI Blocker" to Chrome via the Chrome Web Store or your local unpacked extension directory.
+* **Chrome**: Add "UI Blocker" via the Chrome Web Store or load the directory as an unpacked extension (`chrome://extensions` → Developer mode → Load unpacked).
+* **Firefox**: Install from Firefox Add-ons (AMO), or load temporarily via `about:debugging` → This Firefox → Load Temporary Add-on → select `manifest.json`. Requires Firefox 121+.
 
 ---
 
@@ -84,4 +85,4 @@ UI Blocker does **not** block content; it modifies visual prominence via CSS. It
 
 ## 📧 Support
 
-For questions, suggestions, or bug reports, please contact the developer or submit feedback via the Chrome Web Store listing.
+For questions, suggestions, or bug reports, please contact the developer or submit feedback via the Chrome Web Store or Firefox Add-ons listing.

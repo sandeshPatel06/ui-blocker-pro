@@ -14,28 +14,39 @@ function parseFilters(imageOpacity, videoOpacity, mediaOpacity, customOpacity, c
   const customOpacityValue = customOpacity / 100;
 
   const generateRules = (domain) => {
-    cssRules.push({
-      domain: domain,
-      rule: `img { opacity: ${imageOpacityValue} !important; transition: opacity 0.3s ease !important; }`
-    });
+    const pushRule = (selectorParts, opacityValue) => {
+      const selectorText = selectorParts.join(', ');
+      const declarations = [
+        `opacity: ${opacityValue} !important`,
+        'transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important'
+      ];
 
-    cssRules.push({
-      domain: domain,
-      rule: `video { opacity: ${videoOpacityValue} !important; transition: opacity 0.3s ease !important; }`
-    });
+      if (selectorText === 'img' && opacityValue > 0 && opacityValue < 0.5) {
+        declarations.push('filter: saturate(0.6)');
+      }
 
-    cssRules.push({
-      domain: domain,
-      rule: `audio, iframe, svg, canvas { opacity: ${mediaOpacityValue} !important; transition: opacity 0.3s ease !important; }`
-    });
+      cssRules.push({
+        domain: domain,
+        rule: `${selectorText} { ${declarations.join('; ')}; }`
+      });
 
-    if (customSelectors && customSelectors.trim()) {
-      const selectors = customSelectors.split(',').map(s => s.trim()).filter(s => s);
-      if (selectors.length > 0) {
+      if (opacityValue < 1) {
+        const hoverText = selectorParts.map(s => `${s}:hover`).join(', ');
         cssRules.push({
           domain: domain,
-          rule: `${selectors.join(', ')} { opacity: ${customOpacityValue} !important; transition: opacity 0.3s ease !important; }`
+          rule: `${hoverText} { opacity: 1 !important; }`
         });
+      }
+    };
+
+    pushRule(['img'], imageOpacityValue);
+    pushRule(['video'], videoOpacityValue);
+    pushRule(['audio', 'iframe', 'svg', 'canvas'], mediaOpacityValue);
+
+    if (customSelectors && customSelectors.trim()) {
+      const selectors = customSelectors.split(',').map(s => s.trim()).filter(s => s && !s.includes('{') && !s.includes('}') && !s.includes(';'));
+      if (selectors.length > 0) {
+        pushRule(selectors, customOpacityValue);
       }
     }
   };

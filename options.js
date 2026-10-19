@@ -1,4 +1,6 @@
 const browserAPI = typeof chrome !== 'undefined' ? chrome : browser;
+let debounceTimer;
+let statusTimer;
 
 document.addEventListener('DOMContentLoaded', () => {
   const imageOpacitySlider = document.getElementById('imageOpacity');
@@ -19,21 +21,66 @@ document.addEventListener('DOMContentLoaded', () => {
   const domainSection = document.getElementById('domainSection');
   const themeToggle = document.getElementById('themeToggle');
 
-  // Stepper logic
-  document.querySelectorAll('.step-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const inputId = btn.dataset.input;
-      const step = parseInt(btn.dataset.step);
-      const input = document.getElementById(inputId);
-      const newVal = Math.min(100, Math.max(0, parseInt(input.value) + step));
-      input.value = newVal;
-
-      // Update label and trigger filter update
-      const label = input.closest('.control').querySelector('.val');
-      if (label) label.textContent = `${newVal}%`;
+  function debounceUpdateFilters() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      debounceTimer = null;
       updateFilters();
+    }, 150);
+  }
+
+  function applyStep(btn, useDebounce = false) {
+    const input = document.getElementById(btn.dataset.input);
+    const step = parseInt(btn.dataset.step);
+    const newVal = Math.min(100, Math.max(0, parseInt(input.value) + step));
+    input.value = newVal;
+    setSliderFill(input);
+
+    const label = input.closest('.control').querySelector('.val');
+    if (label) label.textContent = `${newVal}%`;
+    if (useDebounce) debounceUpdateFilters();
+    else updateFilters();
+  }
+
+  document.querySelectorAll('.step-btn').forEach(btn => {
+    let holdTimeout = null;
+    let repeatInterval = null;
+
+    function clearHold() {
+      clearTimeout(holdTimeout);
+      clearInterval(repeatInterval);
+      holdTimeout = null;
+      repeatInterval = null;
+    }
+
+    btn.addEventListener('pointerdown', () => {
+      clearHold();
+      applyStep(btn);
+      holdTimeout = setTimeout(() => {
+        repeatInterval = setInterval(() => applyStep(btn, true), 60);
+      }, 400);
+    });
+    btn.addEventListener('pointerup', clearHold);
+    btn.addEventListener('pointercancel', clearHold);
+    btn.addEventListener('pointerleave', clearHold);
+    window.addEventListener('blur', clearHold);
+
+    btn.addEventListener('click', (event) => {
+      if (event.detail === 0) applyStep(btn);
     });
   });
+
+  function setSliderFill(slider) {
+    slider.style.setProperty('--fill', `${slider.value}%`);
+  }
+
+  function themeIcon(theme) {
+    const svgAttrs = 'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+    if (theme === 'dark') {
+      return `<svg ${svgAttrs}><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+    }
+    return `<svg ${svgAttrs}><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+  }
 
   // Load saved settings
   function loadSettings() {
@@ -68,6 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const theme = result.theme || 'auto';
       applyTheme(theme);
 
+      setSliderFill(imageOpacitySlider);
+      setSliderFill(videoOpacitySlider);
+      setSliderFill(mediaOpacitySlider);
+      setSliderFill(customOpacitySlider);
+
       domainList.innerHTML = '';
       excludeList.innerHTML = '';
       if (result.domains) {
@@ -84,14 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (theme === 'light') document.documentElement.classList.add('light-theme');
     if (theme === 'dark') document.documentElement.classList.add('dark-theme');
 
-    // Update icon
-    if (theme === 'dark') {
-      themeToggle.textContent = '☀️';
-    } else if (theme === 'light') {
-      themeToggle.textContent = '🌙';
-    } else {
-      themeToggle.textContent = '🌓';
-    }
+    themeToggle.innerHTML = themeIcon(theme);
   }
 
   // Toggle Theme
@@ -111,13 +156,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Toggle domain section visibility
   function toggleDomainSection(applyToAll) {
-    domainSection.style.opacity = applyToAll ? '0.5' : '1';
+    domainSection.classList.toggle('is-disabled', applyToAll);
     domainSection.style.pointerEvents = applyToAll ? 'none' : 'auto';
+    domainSection.setAttribute('aria-disabled', applyToAll ? 'true' : 'false');
   }
 
   // Update opacity value display
   function updateOpacity(slider, valueDisplay) {
     valueDisplay.textContent = `${slider.value}%`;
+    setSliderFill(slider);
   }
 
   // Save settings to storage
@@ -165,24 +212,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showStatus(message, type) {
     status.textContent = message;
-    status.className = `status ${type} show`;
-    setTimeout(() => { status.className = 'status'; }, 3000);
+    status.className = 'status';
+    if (type === 'success' || type === 'error') {
+      status.classList.add(type);
+    }
+    status.classList.add('show');
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(() => { status.className = 'status'; }, 3000);
+  }
+
+  function normalizeDomain(raw) {
+    let domain = String(raw).trim().toLowerCase();
+    domain = domain.replace(/^https?:\/\//, '');
+    const cutIndex = domain.search(/[/?#]/);
+    if (cutIndex !== -1) domain = domain.slice(0, cutIndex);
+    if (domain.startsWith('www.')) domain = domain.slice(4);
+    domain = domain.replace(/^\.+|\.+$/g, '');
+    return domain;
   }
 
   function getDomainsList(listElement) {
     const domainInputs = listElement.querySelectorAll('input[type="text"]');
-    return Array.from(domainInputs).map(input => input.value.trim()).filter(Boolean);
+    return Array.from(domainInputs).map(input => {
+      const normalized = normalizeDomain(input.value);
+      if (normalized) input.value = normalized;
+      return normalized;
+    }).filter(Boolean);
   }
 
   function addDomainItem(listElement, domain = '') {
     const domainItem = document.createElement('div');
     domainItem.className = 'domain-item';
-    domainItem.innerHTML = `
-      <input type="text" value="${domain}" placeholder="example.com">
-      <button class="remove-domain btn btn-outline" style="padding: 4px 8px;">×</button>
-    `;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = domain;
+    input.placeholder = 'example.com';
+
+    input.addEventListener('blur', () => {
+      if (input.value.trim()) input.value = normalizeDomain(input.value);
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      input.value = normalizeDomain(input.value);
+      const newInput = addDomainItem(listElement);
+      newInput.focus();
+    });
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'remove-domain btn btn-outline';
+    removeBtn.title = 'Remove';
+    removeBtn.setAttribute('aria-label', 'Remove website');
+    removeBtn.textContent = '×';
+
+    removeBtn.addEventListener('click', () => domainItem.remove());
+
+    domainItem.appendChild(input);
+    domainItem.appendChild(removeBtn);
     listElement.appendChild(domainItem);
-    domainItem.querySelector('.remove-domain').addEventListener('click', () => domainItem.remove());
+    return input;
   }
 
   addDomainBtn.addEventListener('click', () => addDomainItem(domainList));
@@ -191,19 +282,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   imageOpacitySlider.addEventListener('input', () => {
     updateOpacity(imageOpacitySlider, opacityValues[0]);
-    updateFilters();
+    debounceUpdateFilters();
   });
   videoOpacitySlider.addEventListener('input', () => {
     updateOpacity(videoOpacitySlider, opacityValues[1]);
-    updateFilters();
+    debounceUpdateFilters();
   });
   mediaOpacitySlider.addEventListener('input', () => {
     updateOpacity(mediaOpacitySlider, opacityValues[2]);
-    updateFilters();
+    debounceUpdateFilters();
   });
   customOpacitySlider.addEventListener('input', () => {
     updateOpacity(customOpacitySlider, opacityValues[3]);
-    updateFilters();
+    debounceUpdateFilters();
   });
 
   saveBtn.addEventListener('click', () => saveSettings());
@@ -216,6 +307,11 @@ document.addEventListener('DOMContentLoaded', () => {
     saveSettings(true);
     updateFilters();
   });
+
+  setSliderFill(imageOpacitySlider);
+  setSliderFill(videoOpacitySlider);
+  setSliderFill(mediaOpacitySlider);
+  setSliderFill(customOpacitySlider);
 
   loadSettings();
 });

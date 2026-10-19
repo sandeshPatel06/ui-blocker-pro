@@ -1,15 +1,29 @@
 const browserAPI = typeof chrome !== 'undefined' ? chrome : browser;
 
+function normalizeDomain(raw) {
+  let d = String(raw || '').trim().toLowerCase();
+  d = d.replace(/^https?:\/\//, '');
+  d = d.split(/[/?#]/)[0];
+  d = d.replace(/^www\./, '');
+  d = d.replace(/^\.+|\.+$/g, '');
+  return d;
+}
+
+function hostMatches(host, domain) {
+  if (!domain) return false;
+  return host === domain || host.endsWith('.' + domain);
+}
+
 // Create and inject style element
 const styleElement = document.createElement('style');
 document.head.appendChild(styleElement);
 
 // Function to update styles
 function updateStyles(cssRules, excludedDomains = [], isBlockerEnabled = true) {
-  const currentHost = window.location.hostname;
+  const currentHost = window.location.hostname.toLowerCase().replace(/^www\./, '');
 
   // Check if blocker is globally disabled or current host is excluded
-  if (!isBlockerEnabled || excludedDomains.some(domain => currentHost.includes(domain))) {
+  if (!isBlockerEnabled || excludedDomains.some(d => hostMatches(currentHost, normalizeDomain(d)))) {
     styleElement.textContent = '';
     return;
   }
@@ -17,7 +31,7 @@ function updateStyles(cssRules, excludedDomains = [], isBlockerEnabled = true) {
   let cssText = '';
   cssRules.forEach(rule => {
     // Apply global rules or exact domain matches
-    if (rule.domain === '*' || currentHost.includes(rule.domain)) {
+    if (rule.domain === '*' || hostMatches(currentHost, normalizeDomain(rule.domain))) {
       cssText += rule.rule + '\n';
     }
   });

@@ -13,21 +13,59 @@ document.addEventListener('DOMContentLoaded', () => {
   let debounceTimer;
   let currentSettings = {};
 
-  // Stepper logic
-  document.querySelectorAll('.step-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const inputId = btn.dataset.input;
-      const step = parseInt(btn.dataset.step);
-      const input = document.getElementById(inputId);
-      const newVal = Math.min(100, Math.max(0, parseInt(input.value) + step));
-      input.value = newVal;
+  function updateRangeFill(slider) {
+    if (slider) slider.style.setProperty('--fill', `${slider.value}%`);
+  }
 
-      // Update label and trigger filter update
-      const label = document.getElementById(`${inputId}Value`);
-      if (label) label.textContent = `${newVal}%`;
+  let stepTimeout;
+  let stepInterval;
+
+  function applyStep(btn) {
+    const inputId = btn.dataset.input;
+    const step = parseInt(btn.dataset.step);
+    const input = document.getElementById(inputId);
+    const newVal = Math.min(100, Math.max(0, parseInt(input.value) + step));
+    input.value = newVal;
+    updateRangeFill(input);
+    const label = document.getElementById(`${inputId}Value`);
+    if (label) label.textContent = `${newVal}%`;
+  }
+
+  function clearStepTimers() {
+    clearTimeout(stepTimeout);
+    clearInterval(stepInterval);
+    stepTimeout = null;
+    stepInterval = null;
+  }
+
+  function debounceUpdateFilters() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(updateFilters, 150);
+  }
+
+  document.querySelectorAll('.step-btn').forEach(btn => {
+    btn.addEventListener('pointerdown', () => {
+      clearStepTimers();
+      applyStep(btn);
+      debounceUpdateFilters();
+      stepTimeout = setTimeout(() => {
+        stepInterval = setInterval(() => {
+          applyStep(btn);
+          debounceUpdateFilters();
+        }, 60);
+      }, 400);
+    });
+    btn.addEventListener('pointerup', clearStepTimers);
+    btn.addEventListener('pointercancel', clearStepTimers);
+    btn.addEventListener('pointerleave', clearStepTimers);
+    btn.addEventListener('click', (event) => {
+      if (event.detail !== 0) return;
+      applyStep(btn);
       updateFilters();
     });
   });
+
+  window.addEventListener('blur', clearStepTimers);
 
   // Function to update status message
   function updateStatus(message, type = '') {
@@ -61,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentSettings = result;
       const isEnabled = result.isBlockerEnabled !== undefined ? result.isBlockerEnabled : true;
       powerToggle.checked = isEnabled;
+      applyPowerState(isEnabled);
 
       const theme = result.theme || 'auto';
       applyTheme(theme);
@@ -74,6 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
         videoOpacitySlider.value = result.videoOpacity;
         videoOpacityValue.textContent = `${result.videoOpacity}%`;
       }
+      updateRangeFill(imageOpacitySlider);
+      updateRangeFill(videoOpacitySlider);
 
       // Initialize global mode
       globalMode.checked = result.applyToAllDomains !== undefined ? result.applyToAllDomains : true;
@@ -122,19 +163,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function applyPowerState(isEnabled) {
+    const card = document.querySelector('.card');
+    if (card) card.classList.toggle('disabled', !isEnabled);
+  }
+
   // Toggle blocker state
-  powerToggle.addEventListener('change', updateFilters);
+  powerToggle.addEventListener('change', () => {
+    applyPowerState(powerToggle.checked);
+    updateFilters();
+  });
   globalMode.addEventListener('change', updateFilters);
 
   // slider event listeners
   imageOpacitySlider.addEventListener('input', () => {
     imageOpacityValue.textContent = `${imageOpacitySlider.value}%`;
-    updateFilters();
+    updateRangeFill(imageOpacitySlider);
+    debounceUpdateFilters();
   });
 
   videoOpacitySlider.addEventListener('input', () => {
     videoOpacityValue.textContent = `${videoOpacitySlider.value}%`;
-    updateFilters();
+    updateRangeFill(videoOpacitySlider);
+    debounceUpdateFilters();
   });
 
   optionsBtn.addEventListener('click', () => {
