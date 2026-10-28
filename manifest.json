@@ -13,7 +13,8 @@
   "permissions": [
     "storage",
     "scripting",
-    "tabs"
+    "tabs",
+    "sidePanel"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -33,6 +34,18 @@
     }
   ],
   "options_page": "options.html",
+  "side_panel": {
+    "default_path": "options.html"
+  },
+  "sidebar_action": {
+    "default_panel": "options.html",
+    "default_title": "UI Blocker Pro",
+    "default_icon": {
+      "16": "icons/16.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

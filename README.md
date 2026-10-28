@@ -36,6 +36,7 @@ Rules can apply everywhere or only to the domains you choose, and every element 
 | **Apply everywhere** | One switch to apply your rules to every site |
 | **Per-domain rules** | Whitelist where rules run, and blacklist sites that must never be touched |
 | **Live updates** | Slider changes are debounced (150 ms) and applied instantly, no reload |
+| **Side panel settings** | Advanced settings open in Chrome's side panel or Firefox's sidebar instead of a separate tab |
 | **Light and dark themes** | Follows the system theme by default; the settings page has a manual toggle |
 | **Local-only settings** | Stored with `chrome.storage.local`; nothing is synced to a server |
 | **Non-invasive** | Pure CSS opacity plus a short transition; no DOM removal, no request blocking |
@@ -108,7 +109,7 @@ Temporary add-ons are removed when Firefox restarts; load it again after a resta
 
 1. **Click the toolbar icon.** The popup shows the global switch, the current status and sliders for photo and video blocks.
 2. **Drag a slider.** Rules are applied live (150 ms debounce). “Apply Everywhere” decides whether they run on every site or only on your whitelist.
-3. **Open Advanced Settings** for the full control panel: UI-element and custom-block opacity, CSS selectors, whitelist/blacklist and theme.
+3. **Open Advanced Settings** to load the full control panel in the browser's side panel (Firefox: sidebar): UI-element and custom-block opacity, CSS selectors, whitelist/blacklist and theme.
 4. **Save & Apply** to persist to `chrome.storage.local` and push the new rules to every open tab.
 
 To find a selector, right-click the annoying element and choose **Inspect**, then copy its class, id or a `data-*` attribute. Prefer stable hooks such as `#cookie-consent` or `[data-testid="promo"]` over hashed class names.
@@ -168,6 +169,7 @@ Domain entries are normalized: scheme, `www.`, paths, query strings and surround
 | `storage` | Persist sliders, selectors, domains and the global switch |
 | `tabs` | Broadcast style updates to open tabs |
 | `host_permissions: <all_urls>` | Inject the opacity stylesheet on pages you choose |
+| `sidePanel` | Host the advanced settings in Chrome's side panel (Firefox uses `sidebar_action`) |
 | `scripting` | Declared for future manual element picking; not currently used |
 
 Notes for the privacy-minded:
@@ -247,7 +249,7 @@ ui-blocker-pro/
 ├── background.js                 # Rule generation, storage, tab broadcast
 ├── content.js                    # Domain filtering + style injection
 ├── popup.html / popup.js         # Toolbar popup
-├── options.html / options.js     # Full settings page
+├── options.html / options.js     # Settings page (side panel / sidebar)
 ├── icons/                        # 16 / 48 / 128 px icons
 ├── assets/
 │   ├── social-preview.png        # Store/social card

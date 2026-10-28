@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let debounceTimer;
   let currentSettings = {};
+  let hostWindowId;
 
   function updateRangeFill(slider) {
     if (slider) slider.style.setProperty('--fill', `${slider.value}%`);
@@ -188,9 +189,45 @@ document.addEventListener('DOMContentLoaded', () => {
     debounceUpdateFilters();
   });
 
-  optionsBtn.addEventListener('click', () => {
-    browserAPI.runtime.openOptionsPage();
+  // Cache the hosting window up front: sidePanel.open() must be called
+  // synchronously inside the click so the user gesture is not lost.
+  browserAPI.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (tabs && tabs[0]) hostWindowId = tabs[0].windowId;
   });
+
+  function openSettings() {
+    if (browserAPI.sidePanel && typeof browserAPI.sidePanel.open === 'function') {
+      if (hostWindowId === undefined) {
+        browserAPI.runtime.openOptionsPage();
+        return;
+      }
+      try {
+        const opening = browserAPI.sidePanel.open({ windowId: hostWindowId });
+        if (opening && typeof opening.catch === 'function') {
+          opening.catch(() => browserAPI.runtime.openOptionsPage());
+        }
+      } catch (err) {
+        browserAPI.runtime.openOptionsPage();
+      }
+      return;
+    }
+
+    if (browserAPI.sidebarAction && typeof browserAPI.sidebarAction.open === 'function') {
+      try {
+        const opening = browserAPI.sidebarAction.open();
+        if (opening && typeof opening.catch === 'function') {
+          opening.catch(() => browserAPI.runtime.openOptionsPage());
+        }
+      } catch (err) {
+        browserAPI.runtime.openOptionsPage();
+      }
+      return;
+    }
+
+    browserAPI.runtime.openOptionsPage();
+  }
+
+  optionsBtn.addEventListener('click', openSettings);
 
   loadSettings();
 });
