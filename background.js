@@ -29,14 +29,6 @@ function parseFilters(imageOpacity, videoOpacity, mediaOpacity, customOpacity, c
         domain: domain,
         rule: `${selectorText} { ${declarations.join('; ')}; }`
       });
-
-      if (opacityValue < 1) {
-        const hoverText = selectorParts.map(s => `${s}:hover`).join(', ');
-        cssRules.push({
-          domain: domain,
-          rule: `${hoverText} { opacity: 1 !important; }`
-        });
-      }
     };
 
     pushRule(['img'], imageOpacityValue);
@@ -140,9 +132,11 @@ function handleStorageLoad(result) {
   // If we are missing any keys, initialize them. Otherwise, don't overwrite user settings.
   const needsInit = result.imageOpacity === undefined || result.isBlockerEnabled === undefined;
 
+  // Always persist derived rules so stale generated CSS (e.g. old hover rules) is purged.
+  const settingsToSave = { cssRules };
+
   if (needsInit) {
-    browserAPI.storage.local.set({
-      cssRules: cssRules,
+    Object.assign(settingsToSave, {
       imageOpacity,
       videoOpacity,
       mediaOpacity,
@@ -155,6 +149,8 @@ function handleStorageLoad(result) {
       theme
     });
   }
+
+  browserAPI.storage.local.set(settingsToSave);
 
   broadcastUpdate(cssRules, excludedDomains, isBlockerEnabled);
 }

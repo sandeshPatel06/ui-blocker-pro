@@ -14,6 +14,9 @@ function hostMatches(host, domain) {
   return host === domain || host.endsWith('.' + domain);
 }
 
+// Older versions saved hover-reveal rules in storage; never apply them.
+const LEGACY_HOVER_REVEAL = /^[^{}]*:hover[^{}]*\{\s*opacity:\s*1\s*!important;\s*\}\s*$/i;
+
 // Create and inject style element
 const styleElement = document.createElement('style');
 document.head.appendChild(styleElement);
@@ -29,7 +32,8 @@ function updateStyles(cssRules, excludedDomains = [], isBlockerEnabled = true) {
   }
 
   let cssText = '';
-  cssRules.forEach(rule => {
+  (cssRules || []).forEach(rule => {
+    if (LEGACY_HOVER_REVEAL.test(rule.rule || '')) return;
     // Apply global rules or exact domain matches
     if (rule.domain === '*' || hostMatches(currentHost, normalizeDomain(rule.domain))) {
       cssText += rule.rule + '\n';

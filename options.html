@@ -4,59 +4,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
   <meta name="description" content="UI Blocker Pro settings — fade images and videos, hide distracting UI elements with custom CSS selectors and per-domain opacity rules.">
   <title>UI Blocker Pro — Settings</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* ── Snapchat Yellow Design Tokens ── */
+    /* ── Blue design tokens ── */
     :root {
-      --primary: #fffc00;
-      --primary-h: #e6e300;
-      --primary-ink: #201d17;
-      --bg: #faf9f7;
+      color-scheme: light;
+      --primary: #2563eb;
+      --primary-h: #1d4ed8;
+      --primary-ink: #1d4ed8;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --border: #e7e3dc;
-      --text: #201d17;
-      --muted: #6d675c;
-      --danger: #ef4444;
-      --success: #10b981;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #5b6779;
+      --danger: #dc2626;
       --radius: 16px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 10px 24px -8px rgba(15, 23, 42, 0.18);
+      --card-hover-shadow: 0 14px 30px -10px rgba(15, 23, 42, 0.2);
+      --btn-shadow: 0 4px 14px -5px rgba(37, 99, 235, 0.5);
+      --transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
     }
 
     @media (prefers-color-scheme: dark) {
       :root:not(.light-theme) {
-        --primary: #fffc00;
-        --primary-h: #f0ed00;
-        --primary-ink: #fffc00;
-        --bg: #15130f;
-        --surface: #201c16;
-        --border: #37312a;
-        --text: #f5f2ea;
-        --muted: #a39c8d;
+        color-scheme: dark;
+        --primary: #2563eb;
+        --primary-h: #1d4ed8;
+        --primary-ink: #60a5fa;
+        --bg: #0b1220;
+        --surface: #131c2e;
+        --border: #24314a;
+        --text: #e8eefc;
+        --muted: #9aa8bd;
+        --danger: #f87171;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 12px 28px -10px rgba(0, 0, 0, 0.7);
+        --card-hover-shadow: 0 16px 34px -12px rgba(0, 0, 0, 0.8);
+        --btn-shadow: 0 4px 14px -5px rgba(37, 99, 235, 0.6);
       }
     }
 
     .dark-theme {
-      --primary: #fffc00;
-      --primary-h: #f0ed00;
-      --primary-ink: #fffc00;
-      --bg: #15130f;
-      --surface: #201c16;
-      --border: #37312a;
-      --text: #f5f2ea;
-      --muted: #a39c8d;
+      color-scheme: dark;
+      --primary: #2563eb;
+      --primary-h: #1d4ed8;
+      --primary-ink: #60a5fa;
+      --bg: #0b1220;
+      --surface: #131c2e;
+      --border: #24314a;
+      --text: #e8eefc;
+      --muted: #9aa8bd;
+      --danger: #f87171;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 12px 28px -10px rgba(0, 0, 0, 0.7);
+      --card-hover-shadow: 0 16px 34px -12px rgba(0, 0, 0, 0.8);
+      --btn-shadow: 0 4px 14px -5px rgba(37, 99, 235, 0.6);
     }
 
     .light-theme {
-      --primary: #fffc00;
-      --primary-h: #e6e300;
-      --primary-ink: #201d17;
-      --bg: #faf9f7;
+      color-scheme: light;
+      --primary: #2563eb;
+      --primary-h: #1d4ed8;
+      --primary-ink: #1d4ed8;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --border: #e7e3dc;
-      --text: #201d17;
-      --muted: #6d675c;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #5b6779;
+      --danger: #dc2626;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 10px 24px -8px rgba(15, 23, 42, 0.18);
+      --card-hover-shadow: 0 14px 30px -10px rgba(15, 23, 42, 0.2);
+      --btn-shadow: 0 4px 14px -5px rgba(37, 99, 235, 0.5);
     }
 
     * {
@@ -66,16 +91,34 @@
     }
 
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 40px 16px 100px;
+      padding: 32px 16px 96px;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       font-size: 14px;
       line-height: 1.6;
+      color: var(--text);
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      background:
+        radial-gradient(900px 320px at 50% -8%, color-mix(in srgb, var(--primary) 7%, transparent), transparent 70%),
+        var(--bg);
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    ::selection {
+      background: color-mix(in srgb, var(--primary) 25%, transparent);
     }
 
     .container {
@@ -83,14 +126,14 @@
       max-width: 960px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      animation: fadeIn 0.5s ease-out;
+      gap: 20px;
+      animation: fadeIn 0.4s ease-out;
     }
 
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(8px);
       }
 
       to {
@@ -99,19 +142,19 @@
       }
     }
 
-    /* ── Card UI ── */
+    /* ── Card ── */
     .card {
-      background: var(--surface);
+      padding: 24px;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 32px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
       transition: var(--transition);
     }
 
     .card:hover {
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
       border-color: color-mix(in srgb, var(--primary) 20%, var(--border));
+      box-shadow: var(--card-hover-shadow);
     }
 
     /* ── Header ── */
@@ -119,67 +162,67 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 20px;
       flex-wrap: wrap;
     }
 
     .header-brand {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 20px;
     }
 
     .header-brand img {
-      width: 56px;
-      height: 56px;
+      width: 52px;
+      height: 52px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(198, 194, 0, 0.15);
-      transition: transform 0.3s;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.22);
+      transition: transform 0.2s ease;
     }
 
     .header-brand img:hover {
-      transform: scale(1.05) rotate(2deg);
+      transform: scale(1.03);
     }
 
     .header-brand h1 {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.025em;
+      line-height: 1.25;
     }
 
     .header-brand p {
+      margin-top: 2px;
       font-size: 13px;
       color: var(--muted);
-      margin-top: 2px;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
-    /* ── Icon Button ── */
+    /* ── Icon button ── */
     .icon-btn {
       width: 44px;
       height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 12px;
       border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       background: var(--surface);
       color: var(--text);
       cursor: pointer;
-      font-size: 18px;
-      transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
     }
 
     .icon-btn:hover {
-      border-color: var(--primary-ink);
+      border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
       color: var(--primary-ink);
-      background: color-mix(in srgb, var(--primary) 5%, var(--surface));
-      transform: translateY(-2px);
+      background: color-mix(in srgb, var(--primary) 6%, var(--surface));
+      transform: translateY(-1px);
     }
 
     .icon-btn svg {
@@ -195,6 +238,7 @@
       position: relative;
       width: 52px;
       height: 28px;
+      flex-shrink: 0;
     }
 
     .switch input {
@@ -209,7 +253,7 @@
       background: var(--border);
       border-radius: 99px;
       cursor: pointer;
-      transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background-color 0.15s ease;
     }
 
     .slider-toggle::before {
@@ -221,8 +265,8 @@
       top: 4px;
       background: #fff;
       border-radius: 50%;
-      transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+      transition: transform 0.15s ease;
     }
 
     input:checked+.slider-toggle {
@@ -233,112 +277,115 @@
       transform: translateX(24px);
     }
 
-    /* ── Section Title ── */
+    /* ── Section title ── */
     .section-title {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--primary-ink);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 24px;
       display: flex;
       align-items: center;
       gap: 12px;
+      margin-bottom: 12px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--primary-ink);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
     }
 
     .section-title::after {
       content: '';
       flex: 1;
       height: 1px;
-      background: linear-gradient(to right, color-mix(in srgb, var(--primary) 20%, transparent), transparent);
+      background: linear-gradient(to right, color-mix(in srgb, var(--primary) 22%, transparent), transparent);
     }
 
-    /* ── Grid Layout ── */
+    /* ── Grid ── */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 32px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
     }
 
-    /* ── Control / Stepper ── */
+    /* ── Control / stepper ── */
     .control {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .control-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 10px;
     }
 
     .control-head label {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       font-size: 14px;
       font-weight: 600;
       color: var(--text);
     }
 
     .control-head label svg {
-      width: 18px;
-      height: 18px;
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
       color: var(--primary-ink);
       stroke-width: 2.2;
-      opacity: 0.9;
     }
 
     .val {
-      font-size: 15px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+      font-size: 13px;
       font-weight: 800;
       color: var(--primary-ink);
       font-variant-numeric: tabular-nums;
-      background: color-mix(in srgb, var(--primary) 10%, var(--surface));
-      padding: 2px 8px;
-      border-radius: 6px;
     }
 
     .stepper {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .step-btn {
       width: 36px;
       height: 36px;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
+      background: var(--surface);
       color: var(--text);
       cursor: pointer;
-      transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
     }
 
     .step-btn:hover {
-      border-color: var(--primary-ink);
+      border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
       color: var(--primary-ink);
-      background: color-mix(in srgb, var(--primary) 5%, var(--surface));
+      background: color-mix(in srgb, var(--primary) 6%, var(--surface));
       transform: translateY(-1px);
     }
 
     .step-btn:active {
-      transform: scale(0.92);
+      transform: scale(0.94);
     }
 
     .step-btn svg {
-      width: 18px;
-      height: 18px;
+      width: 17px;
+      height: 17px;
       stroke-width: 2.5;
     }
 
     input[type="range"] {
       flex: 1;
+      min-width: 0;
       height: 8px;
       border-radius: 8px;
       appearance: none;
@@ -352,17 +399,17 @@
       appearance: none;
       -webkit-appearance: none;
       box-sizing: content-box;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: var(--primary);
-      border: 4px solid var(--surface);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 3px solid var(--surface);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+      transition: transform 0.15s ease;
     }
 
     input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
+      transform: scale(1.12);
     }
 
     input[type="range"]:active::-webkit-slider-thumb {
@@ -383,90 +430,125 @@
 
     input[type="range"]::-moz-range-thumb {
       box-sizing: content-box;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: var(--primary);
-      border: 4px solid var(--surface);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 3px solid var(--surface);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
       cursor: pointer;
+      transition: transform 0.15s ease;
     }
 
     input[type="range"]::-moz-range-thumb:hover {
-      transform: scale(1.2);
+      transform: scale(1.12);
     }
 
     input[type="range"]:active::-moz-range-thumb {
       transform: scale(1.2);
     }
 
-    /* ── Focus Visibility ── */
+    /* ── Focus visibility ── */
     .switch input:focus-visible+.slider-toggle,
     .step-btn:focus-visible,
     input[type="range"]:focus-visible,
     .btn:focus-visible,
     .icon-btn:focus-visible,
-    textarea:focus-visible,
-    input[type="text"]:focus-visible,
     .check-card:focus-within {
       outline: 2px solid var(--primary-ink);
       outline-offset: 2px;
     }
 
-    /* ── Interactive Elements ── */
-    textarea {
+    /* ── Text inputs ── */
+    textarea,
+    input[type="text"] {
       width: 100%;
-      min-height: 120px;
-      padding: 16px;
-      border-radius: 12px;
+      padding: 12px 14px;
       border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       background: color-mix(in srgb, var(--primary) 2%, var(--surface));
       color: var(--text);
-      font-family: inherit;
       font-size: 14px;
-      resize: vertical;
-      margin-top: 12px;
-      transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
       outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
     }
 
-    textarea:focus {
+    textarea {
+      min-height: 110px;
+      margin-top: 10px;
+      resize: vertical;
+    }
+
+    textarea::placeholder,
+    input[type="text"]::placeholder {
+      color: var(--muted);
+      opacity: 0.8;
+    }
+
+    textarea:focus,
+    input[type="text"]:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent);
       background: var(--surface);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 14%, transparent);
     }
 
+    .field-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .rules-block {
+      margin-top: 12px;
+    }
+
+    /* ── Check card ── */
     .check-card {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 24px;
+      gap: 14px;
+      margin-top: 20px;
+      padding: 20px;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       background: var(--surface);
       cursor: pointer;
-      margin-top: 24px;
       transition: var(--transition);
     }
 
     .check-card:hover,
     .check-card:focus-within {
-      border-color: var(--primary-ink);
+      border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
       background: color-mix(in srgb, var(--primary) 2%, var(--surface));
-      transform: scale(1.01);
+      box-shadow: var(--shadow-sm);
     }
 
     .check-card input {
-      width: 22px;
-      height: 22px;
-      accent-color: var(--primary);
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1.5px solid color-mix(in srgb, var(--muted) 55%, var(--border));
+      border-radius: 6px;
+      background-color: var(--surface);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 12px 12px;
       cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .check-card input:checked {
+      border-color: var(--primary);
+      background-color: var(--primary);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.25 8.5l3.25 3.25 6.25-7'/%3E%3C/svg%3E");
     }
 
     .check-card-text b {
       display: block;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--text);
     }
 
@@ -475,100 +557,97 @@
       color: var(--muted);
     }
 
-    /* ── Domain Lists ── */
+    /* ── Domain lists ── */
     .domain-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-top: 32px;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
     }
 
     .domain-head h3 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--text);
+    }
+
+    .domain-head h3.is-danger {
+      color: var(--danger);
     }
 
     .domain-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 16px;
+      gap: 10px;
       width: 100%;
+      margin-top: 12px;
     }
 
     .domain-list:empty::after {
       content: 'No websites added yet';
       display: block;
-      text-align: center;
-      padding: 16px;
+      padding: 14px;
       border: 1px dashed var(--border);
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       background: color-mix(in srgb, var(--muted) 4%, var(--surface));
       color: var(--muted);
       font-size: 13px;
       font-style: italic;
+      text-align: center;
     }
 
     #domainSection {
-      transition: var(--transition);
+      transition: opacity 0.2s ease, filter 0.2s ease;
     }
 
     #domainSection.is-disabled {
       opacity: 0.5;
       filter: grayscale(1);
+      pointer-events: none;
     }
 
     .domain-item {
       display: flex;
-      gap: 12px;
       align-items: center;
+      gap: 8px;
       width: 100%;
     }
 
-    input[type="text"] {
+    .domain-item input[type="text"] {
       flex: 1;
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 10px;
       background: var(--bg);
-      color: var(--text);
-      font-family: inherit;
-      font-size: 14px;
-      outline: none;
-      transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    input[type="text"]:focus {
-      border-color: var(--primary);
-      background: var(--surface);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 8%, transparent);
     }
 
     /* ── Buttons ── */
     .btn {
-      padding: 12px 32px;
-      border-radius: 12px;
+      padding: 11px 20px;
       border: 1px solid var(--border);
-      font-family: inherit;
+      border-radius: 10px;
+      font-size: 14px;
       font-weight: 700;
-      cursor: pointer;
-      transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 15px;
       letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
     }
 
     .btn-primary {
-      background: var(--primary);
-      color: #1f1c17;
       border: none;
-      box-shadow: 0 4px 6px -1px rgba(198, 194, 0, 0.2);
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: var(--btn-shadow);
     }
 
     .btn-primary:hover {
       background: var(--primary-h);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgba(198, 194, 0, 0.3);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px -8px rgba(37, 99, 235, 0.55);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
     }
 
     .btn-ghost {
@@ -577,32 +656,37 @@
     }
 
     .btn-ghost:hover {
-      background: var(--surface);
+      border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+      background: color-mix(in srgb, var(--primary) 5%, var(--surface));
       color: var(--primary-ink);
-      border-color: var(--primary-ink);
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
 
     .btn-sm {
-      padding: 8px 16px;
+      padding: 8px 14px;
       font-size: 13px;
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
     }
 
     .btn-outline {
-      padding: 8px 12px;
-      font-size: 15px;
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 1px solid var(--danger);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--danger);
+      font-size: 18px;
       font-weight: 700;
       line-height: 1;
-      background: transparent;
-      border: 1px solid var(--danger);
-      color: var(--danger);
-      border-radius: 8px;
     }
 
     .btn-outline:hover {
       background: color-mix(in srgb, var(--danger) 12%, transparent);
-      border-color: var(--danger);
       color: var(--danger);
       transform: translateY(-1px);
     }
@@ -611,26 +695,92 @@
       transform: scale(0.95);
     }
 
-    /* ── Footer Actions ── */
+    /* ── Sticky action bar ── */
     .action-bar {
+      position: sticky;
+      bottom: 12px;
+      z-index: 100;
       display: flex;
-      gap: 16px;
       align-items: center;
       justify-content: flex-end;
-      margin-top: 12px;
-      position: sticky;
-      bottom: 16px;
-      padding: 16px 24px;
-      background: color-mix(in srgb, var(--bg) 80%, transparent);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      gap: 12px;
+      margin-top: 8px;
+      padding: 12px 16px;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-      z-index: 100;
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ── Toast ── */
+    .status {
+      position: fixed;
+      right: 32px;
+      bottom: 32px;
+      z-index: 1000;
+      max-width: min(88vw, 360px);
+      padding: 14px 24px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 18px 32px -12px rgba(37, 99, 235, 0.55);
+      transform: translateY(150px);
+      transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+    }
+
+    .status.show {
+      transform: translateY(0);
+    }
+
+    .status.success {
+      background: #047857;
+      box-shadow: 0 18px 32px -12px rgba(4, 120, 87, 0.55);
+    }
+
+    .status.error {
+      background: #b91c1c;
+      box-shadow: 0 18px 32px -12px rgba(185, 28, 28, 0.55);
+    }
+
+    /* ── Help text ── */
+    .help-text {
+      margin: -4px 0 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .help-text code {
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+      color: var(--primary-ink);
+      font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+      font-size: 12.5px;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 640px) {
+      body {
+        padding: 24px 12px 150px;
+      }
+
+      .container {
+        gap: 16px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
       .header {
         flex-direction: column;
         align-items: center;
@@ -647,75 +797,25 @@
       }
 
       .action-bar {
-        flex-direction: column-reverse;
         width: 100%;
-        bottom: 12px;
-        padding: 16px;
+        bottom: 8px;
+        padding: 10px;
+        gap: 10px;
       }
 
       .action-bar .btn {
-        width: 100%;
+        flex: 1;
+        padding: 10px 12px;
+        font-size: 13px;
       }
-    }
 
-    /* ── Status Toast ── */
-    .status {
-      position: fixed;
-      bottom: 40px;
-      right: 40px;
-      padding: 16px 32px;
-      border-radius: 12px;
-      background: var(--primary);
-      color: #1f1c17;
-      font-weight: 700;
-      box-shadow: 0 20px 25px -5px rgba(198, 194, 0, 0.4);
-      transform: translateY(150px);
-      transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 1000;
-      max-width: min(88vw, 360px);
-    }
-
-    .status.show {
-      transform: translateY(0);
-    }
-
-    .status.success {
-      background: var(--success);
-      box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.4);
-    }
-
-    .status.error {
-      background: var(--danger);
-      box-shadow: 0 20px 25px -5px rgba(239, 68, 68, 0.4);
-    }
-
-    @media (max-width: 640px) {
       .status {
         left: 16px;
         right: 16px;
         bottom: 100px;
-        text-align: center;
         max-width: none;
+        text-align: center;
       }
-    }
-
-    /* Tooltip styles */
-    .help-text {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: -8px;
-      margin-bottom: 8px;
-    }
-
-    .help-text code {
-      font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
-      font-size: 12.5px;
-      padding: 2px 6px;
-      background: color-mix(in srgb, var(--primary) 8%, var(--surface));
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--primary);
-      white-space: nowrap;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -731,30 +831,31 @@
 
 <body>
   <div class="container">
-    <!-- Header Block -->
+    <!-- Header -->
     <div class="card header">
       <div class="header-brand">
-        <img src="icons/128.png" alt="Pro Logo">
+        <img src="icons/128.png" alt="UI Blocker Pro logo">
         <div>
           <h1>UI Blocker Pro</h1>
           <p>Personalize your web experience by blocking distractions</p>
         </div>
       </div>
       <div class="header-actions">
-        <!-- One-click Toggle -->
-        <button id="themeToggle" class="icon-btn" title="Switch between Light and Dark mode" aria-label="Switch between Light and Dark mode">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button type="button" id="themeToggle" class="icon-btn"
+          title="Switch between light and dark mode" aria-label="Switch between light and dark mode">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </button>
-        <label class="switch" title="Enable or Disable Blocker">
-          <input type="checkbox" id="globalPowerToggle" checked aria-label="Enable or Disable Blocker">
+        <label class="switch" title="Enable or disable blocker">
+          <input type="checkbox" id="globalPowerToggle" checked aria-label="Enable or disable blocker">
           <span class="slider-toggle"></span>
         </label>
       </div>
     </div>
 
-    <!-- Configuration Block -->
+    <!-- Visual blockers -->
     <div class="card">
       <span class="section-title">Visual Blockers / Opacity</span>
       <p class="help-text">Adjust how much of each element type remains visible. 0% is completely hidden.</p>
@@ -763,8 +864,8 @@
         <!-- Images -->
         <div class="control">
           <div class="control-head">
-            <label>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <label for="imageOpacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                 <circle cx="8.5" cy="8.5" r="1.5" />
                 <polyline points="21 15 16 10 5 21" />
@@ -774,24 +875,27 @@
             <span class="val opacity-value">30%</span>
           </div>
           <div class="stepper">
-            <button class="step-btn" data-input="imageOpacity" data-step="-1" title="Subtract 1%">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <button type="button" class="step-btn" data-input="imageOpacity" data-step="-1" title="Subtract 1%"
+              aria-label="Decrease photo opacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </button>
             <input type="range" id="imageOpacity" min="0" max="100" value="30">
-            <button class="step-btn" data-input="imageOpacity" data-step="1" title="Add 1%">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <button type="button" class="step-btn" data-input="imageOpacity" data-step="1" title="Add 1%"
+              aria-label="Increase photo opacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <path d="M9 18l6-6-6-6" />
               </svg>
             </button>
           </div>
         </div>
+
         <!-- Videos -->
         <div class="control">
           <div class="control-head">
-            <label>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <label for="videoOpacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <polygon points="23 7 16 12 23 17 23 7" />
                 <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
               </svg>
@@ -800,67 +904,75 @@
             <span class="val opacity-value">30%</span>
           </div>
           <div class="stepper">
-            <button class="step-btn" data-input="videoOpacity" data-step="-1" title="Subtract 1%">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <button type="button" class="step-btn" data-input="videoOpacity" data-step="-1" title="Subtract 1%"
+              aria-label="Decrease video opacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </button>
             <input type="range" id="videoOpacity" min="0" max="100" value="30">
-            <button class="step-btn" data-input="videoOpacity" data-step="1" title="Add 1%">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <button type="button" class="step-btn" data-input="videoOpacity" data-step="1" title="Add 1%"
+              aria-label="Increase video opacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <path d="M9 18l6-6-6-6" />
               </svg>
             </button>
           </div>
         </div>
-        <!-- Other Media (Layers) -->
+
+        <!-- Complex UI -->
         <div class="control">
           <div class="control-head">
-            <label>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <label for="mediaOpacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <path d="M2 17L12 22L22 17" />
                 <path d="M2 12L12 17L22 12" />
                 <path d="M12 2L2 7L12 12L22 7L12 2Z" />
               </svg>
-              Complex UI Elements
+              UI Elements
             </label>
             <span class="val opacity-value">30%</span>
           </div>
           <div class="stepper">
-            <button class="step-btn" data-input="mediaOpacity" data-step="-1" title="Subtract 1%">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <button type="button" class="step-btn" data-input="mediaOpacity" data-step="-1" title="Subtract 1%"
+              aria-label="Decrease complex element opacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </button>
             <input type="range" id="mediaOpacity" min="0" max="100" value="30">
-            <button class="step-btn" data-input="mediaOpacity" data-step="1" title="Add 1%">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <button type="button" class="step-btn" data-input="mediaOpacity" data-step="1" title="Add 1%"
+              aria-label="Increase complex element opacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <path d="M9 18l6-6-6-6" />
               </svg>
             </button>
           </div>
         </div>
+
         <!-- Custom -->
         <div class="control">
           <div class="control-head">
-            <label>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <label for="customOpacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <polyline points="16 18 22 12 16 6" />
                 <polyline points="8 6 2 12 8 18" />
               </svg>
-              Personalize Your Blocks
+              Custom Blocks
             </label>
             <span class="val opacity-value">30%</span>
           </div>
           <div class="stepper">
-            <button class="step-btn" data-input="customOpacity" data-step="-1" title="Subtract 1%">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <button type="button" class="step-btn" data-input="customOpacity" data-step="-1" title="Subtract 1%"
+              aria-label="Decrease custom element opacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </button>
             <input type="range" id="customOpacity" min="0" max="100" value="30">
-            <button class="step-btn" data-input="customOpacity" data-step="1" title="Add 1%">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <button type="button" class="step-btn" data-input="customOpacity" data-step="1" title="Add 1%"
+              aria-label="Increase custom element opacity">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                 <path d="M9 18l6-6-6-6" />
               </svg>
             </button>
@@ -869,12 +981,12 @@
       </div>
     </div>
 
-    <!-- Advanced Rules Block -->
+    <!-- Rules -->
     <div class="card">
       <span class="section-title">Personalized Blocking Rules</span>
 
-      <div style="margin-top: 12px;">
-        <label style="font-size: 14px; font-weight: 600; color: var(--text);">Add Specific Elements to Block</label>
+      <div class="rules-block">
+        <label class="field-label" for="customSelectors">Add Specific Elements to Block</label>
         <p class="help-text">Enter CSS selectors like <code>.ad-banner</code> or <code>#sidebar</code> to filter them
           out.</p>
         <textarea id="customSelectors" placeholder="Example: .sponsored-post, [data-testid='sidebar']"></textarea>
@@ -888,33 +1000,33 @@
         </div>
       </label>
 
-      <!-- Whitelist Section -->
+      <!-- Whitelist -->
       <div id="domainSection">
         <div class="domain-head">
           <h3>Safe Websites (Whitelist)</h3>
-          <button id="addDomainBtn" class="btn btn-ghost btn-sm">+ Add Website</button>
+          <button type="button" id="addDomainBtn" class="btn btn-ghost btn-sm">+ Add Website</button>
         </div>
         <p class="help-text">Filters will only apply to these websites unless "Apply Everywhere" is on.</p>
         <div class="domain-list" id="domainList"></div>
       </div>
 
-      <!-- Blacklist Section -->
+      <!-- Blacklist -->
       <div class="domain-head">
-        <h3 style="color:var(--danger)">Exempted Websites (Blacklist)</h3>
-        <button id="addExcludeBtn" class="btn btn-ghost btn-sm">+ Add Website</button>
+        <h3 class="is-danger">Exempted Websites (Blacklist)</h3>
+        <button type="button" id="addExcludeBtn" class="btn btn-ghost btn-sm">+ Add Website</button>
       </div>
       <p class="help-text">The blocker will never run on these specific websites.</p>
       <div class="domain-list" id="excludeList"></div>
     </div>
 
-    <!-- Fixed Footer Action Bar -->
+    <!-- Actions -->
     <div class="action-bar">
-      <button id="saveBtn" class="btn btn-ghost">Save Draft</button>
-      <button id="updateBtn" class="btn btn-primary">Save & Apply Changes</button>
+      <button type="button" id="saveBtn" class="btn btn-ghost">Save Draft</button>
+      <button type="button" id="updateBtn" class="btn btn-primary">Save &amp; Apply</button>
     </div>
   </div>
 
-  <div id="status" class="status">Settings Successfully Applied</div>
+  <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true">Settings Successfully Applied</div>
   <script src="options.js"></script>
 </body>
 
