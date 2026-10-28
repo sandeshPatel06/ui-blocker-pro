@@ -2,6 +2,8 @@
   "name": "ui-blocker-pro",
   "version": "1.2.0",
   "private": true,
+  "license": "MIT",
+  "author": "Sandesh Patel",
   "description": "Fade or hide distracting UI on any website: cookie banners, videos, images, sidebars and custom elements. Cross-browser Chrome and Firefox extension (Manifest V3) with opacity sliders, CSS selectors and per-domain rules.",
   "keywords": [
     "browser-extension",

@@ -8,6 +8,7 @@
     <img alt="Firefox 121+" src="https://img.shields.io/badge/Firefox-121%2B-orange?logo=firefox&amp;logoColor=white">
     <img alt="Manifest V3" src="https://img.shields.io/badge/Manifest-V3-635BFF?logo=googlechrome&amp;logoColor=white">
     <img alt="Version 1.2" src="https://img.shields.io/badge/version-1.2-2563eb?labelColor=0f172a">
+    <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-10b981">
     <img alt="No tracking" src="https://img.shields.io/badge/no-tracking-10b981?logo=securityscorecard&amp;logoColor=white">
   </p>
 </div>
@@ -359,7 +360,7 @@ There is no lint or test runner configured; the manual checklist below is the ac
 
 This project builds on the original **UI Blocker** extension by **[Reak Infotech](https://github.com/reakinfotech/ui-Block)**. Credit for the original concept and foundation goes to the Reak Infotech team; this repository continues that work with cross-browser support, theming, per-domain rules and a modern UI.
 
-**License:** no license file is included yet. Until one is added, the source is all rights reserved by the author. If you plan to reuse it, open an issue to discuss licensing.
+**License:** [MIT](LICENSE) © 2026 Sandesh Patel. The original UI Blocker concept and foundation by Reak Infotech is credited above.
 
 ---
 
