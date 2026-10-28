@@ -2,7 +2,31 @@
   "name": "ui-blocker-pro",
   "version": "1.2.0",
   "private": true,
-  "description": "Fade, hide and declutter UI elements on any website. Chrome and Firefox extension (Manifest V3).",
+  "description": "Fade or hide distracting UI on any website: cookie banners, videos, images, sidebars and custom elements. Cross-browser Chrome and Firefox extension (Manifest V3) with opacity sliders, CSS selectors and per-domain rules.",
+  "keywords": [
+    "browser-extension",
+    "chrome-extension",
+    "firefox-extension",
+    "manifest-v3",
+    "ui-blocker",
+    "element-hider",
+    "cookie-banner",
+    "custom-css",
+    "css-selectors",
+    "opacity",
+    "declutter",
+    "productivity",
+    "privacy",
+    "vanilla-javascript"
+  ],
+  "homepage": "https://github.com/sandeshPatel06/ui-blocker-pro#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandeshPatel06/ui-blocker-pro.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sandeshPatel06/ui-blocker-pro/issues"
+  },
   "scripts": {
     "screenshots": "node scripts/capture-screenshots.mjs"
   },
